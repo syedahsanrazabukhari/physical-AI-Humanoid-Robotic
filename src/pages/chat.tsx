@@ -15,6 +15,10 @@ interface Message {
 }
 
 export default function ChatPage() {
+  // Use a deploy-friendly API base: prefer public env, fallback to local dev
+  const chatApiUrl =
+    process.env.NEXT_PUBLIC_CHAT_API?.trim() || '/api/chat';
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +65,7 @@ export default function ChatPage() {
     try {
       // Since Docusaurus is static, we'll need to use a serverless function or external API
       // For now, this is a placeholder that you'll need to connect to your backend
-      const response = await fetch('http://localhost:3001/api/chat', {
+      const response = await fetch(chatApiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
